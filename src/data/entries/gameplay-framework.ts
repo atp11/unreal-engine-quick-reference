@@ -1,0 +1,135 @@
+import type { ReferenceEntry } from '../../types/reference'
+
+export const gameplayFrameworkEntries: ReferenceEntry[] = [
+  {
+    id: 'game-mode',
+    slug: 'gamemode',
+    title: 'GameMode',
+    originalName: 'GameMode (AGameModeBase / AGameMode)',
+    summary: 'Define reglas de la partida en el servidor: clases por defecto y flujo de juego.',
+    description:
+      'El GameMode existe en el servidor (o en single player). Especifica Default Pawn, PlayerController, HUD, GameState, etc., y puede implementar reglas (respawn, score).',
+    category: 'gameplay-framework',
+    subcategory: 'Núcleo',
+    elementType: 'clase',
+    tags: ['gamemode', 'reglas', 'servidor', 'default classes'],
+    aliases: ['AGameMode', 'AGameModeBase'],
+    ueVersions: ['5.0', '5.1', '5.2', '5.3', '5.4', '5.5'],
+    difficulty: 'intermedio',
+    whenToUse: 'Configurar qué clases usa el nivel y reglas específicas del modo de juego.',
+    howToUse:
+      'World Settings → GameMode Override, o Project Settings. Implementa lógica de inicio/fin de partida en tu BP/C++ GameMode.',
+    relatedEntries: ['game-state', 'player-controller', 'game-instance'],
+    cppEquivalent: {
+      available: true,
+      summary: 'class AMyGameMode : public AGameModeBase',
+    },
+    officialReferences: [
+      {
+        title: 'Gameplay Framework',
+        url: 'https://dev.epicgames.com/documentation/unreal-engine/gameplay-framework-in-unreal-engine',
+      },
+    ],
+    lastReviewed: '2026-03-01',
+  },
+  {
+    id: 'game-state',
+    slug: 'gamestate',
+    title: 'GameState',
+    originalName: 'GameState (AGameStateBase)',
+    summary: 'Estado de la partida replicado a clientes: marcador, fase, tiempo, etc.',
+    description:
+      'GameState mantiene datos compartidos del match. A diferencia del GameMode, los clientes también tienen una instancia (replicada).',
+    category: 'gameplay-framework',
+    subcategory: 'Núcleo',
+    elementType: 'clase',
+    tags: ['gamestate', 'replicación', 'marcador'],
+    aliases: ['AGameState', 'AGameStateBase'],
+    ueVersions: ['5.0', '5.1', '5.2', '5.3', '5.4', '5.5'],
+    difficulty: 'intermedio',
+    whenToUse: 'Información que todos los jugadores deben ver: puntos del equipo, ronda actual.',
+    howToUse:
+      'Asigna tu GameState en el GameMode. Guarda variables replicadas ahí; el UI lee el GameState.',
+    relatedEntries: ['game-mode', 'player-controller'],
+    cppEquivalent: {
+      available: true,
+      summary: 'UPROPERTY(Replicated) en AGameStateBase subclass.',
+    },
+    lastReviewed: '2026-03-01',
+  },
+  {
+    id: 'player-controller',
+    slug: 'player-controller',
+    title: 'PlayerController',
+    originalName: 'PlayerController (APlayerController)',
+    summary: 'Representa al jugador humano: posesión del Pawn, input, cámara y UI asociada.',
+    description:
+      'El PlayerController es el puente entre el jugador y el Pawn. Ideal para input de alto nivel, widgets de pantalla y lógica que debe sobrevivir al cambio de Pawn.',
+    category: 'gameplay-framework',
+    subcategory: 'Núcleo',
+    elementType: 'clase',
+    tags: ['playercontroller', 'posesión', 'input', 'ui'],
+    aliases: ['APlayerController', 'PC'],
+    ueVersions: ['5.0', '5.1', '5.2', '5.3', '5.4', '5.5'],
+    difficulty: 'intermedio',
+    whenToUse: 'Input y HUD del jugador; posesión; raycasts desde la cámara del jugador.',
+    howToUse:
+      'Configura Default Player Controller Class en GameMode. Bind Enhanced Input aquí o en el Pawn según tu arquitectura.',
+    relatedEntries: ['enhanced-input-setup', 'game-mode', 'hud', 'pawn'],
+    cppEquivalent: {
+      available: true,
+      summary: 'class AMyPlayerController : public APlayerController',
+    },
+    lastReviewed: '2026-03-01',
+  },
+  {
+    id: 'game-instance',
+    slug: 'gameinstance',
+    title: 'GameInstance',
+    originalName: 'GameInstance (UGameInstance)',
+    summary: 'Objeto que persiste entre niveles: progreso, settings, sesión online.',
+    description:
+      'GameInstance vive mientras la aplicación del juego está abierta (salvo casos especiales). Útil para datos que no deben resetearse al cargar un mapa.',
+    category: 'gameplay-framework',
+    subcategory: 'Persistencia',
+    elementType: 'clase',
+    tags: ['gameinstance', 'persistencia', 'niveles'],
+    aliases: ['UGameInstance'],
+    ueVersions: ['5.0', '5.1', '5.2', '5.3', '5.4', '5.5'],
+    difficulty: 'intermedio',
+    whenToUse: 'Inventario global, opciones, Steam/EOS session data, loading screens.',
+    howToUse:
+      'Project Settings → Game Instance Class. Accede con Get Game Instance y cast a tu clase.',
+    relatedEntries: ['game-mode', 'game-state'],
+    cppEquivalent: {
+      available: true,
+      summary: 'class UMyGameInstance : public UGameInstance',
+    },
+    lastReviewed: '2026-03-01',
+  },
+  {
+    id: 'hud',
+    slug: 'hud',
+    title: 'HUD',
+    originalName: 'HUD (AHUD)',
+    summary: 'Clase clásica de dibujado en pantalla; en UE5 suele complementar o ceder a UMG.',
+    description:
+      'AHUD permite dibujar con Canvas. Muchos proyectos modernos usan solo Widget Blueprints, pero HUD sigue siendo válida para debug o híbridos.',
+    category: 'gameplay-framework',
+    subcategory: 'Presentación',
+    elementType: 'clase',
+    tags: ['hud', 'canvas', 'ui'],
+    aliases: ['AHUD'],
+    ueVersions: ['5.0', '5.1', '5.2', '5.3', '5.4', '5.5'],
+    difficulty: 'intermedio',
+    whenToUse: 'Debug draw, crosshairs simples, o proyectos que ya usan Canvas.',
+    howToUse:
+      'Asigna HUD Class en GameMode. Para UI rica, crea Widget y añádelo desde PlayerController; no dependas solo de AHUD.',
+    relatedEntries: ['player-controller', 'widget-blueprint'],
+    cppEquivalent: {
+      available: true,
+      summary: 'DrawHUD() override en AHUD.',
+    },
+    lastReviewed: '2026-03-01',
+  },
+]
