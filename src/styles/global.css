@@ -96,6 +96,10 @@ pre,
   display: none;
 }
 
+.sidebar-backdrop {
+  display: none;
+}
+
 .main-area {
   grid-area: main;
   min-width: 0;
@@ -189,9 +193,21 @@ pre,
   .sidebar.mobile-open {
     display: block;
     position: fixed;
-    inset: var(--header-height) 0 0 0;
+    inset: var(--header-height) auto 0 0;
     z-index: 40;
     width: min(100%, 320px);
     box-shadow: var(--shadow);
+  }
+
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: var(--header-height) 0 0 0;
+    z-index: 35;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    background: rgba(0, 0, 0, 0.45);
+    cursor: pointer;
   }
 }

@@ -5,10 +5,11 @@ import { useApp } from '../../context/AppContext'
 import { SearchBar } from '../search/SearchBar'
 
 interface HeaderProps {
-  onToggleMobileNav: () => void
+  onToggleNav: () => void
+  navOpen: boolean
 }
 
-export function Header({ onToggleMobileNav }: HeaderProps) {
+export function Header({ onToggleNav, navOpen }: HeaderProps) {
   const { theme, toggleTheme, favorites } = useApp()
   const [query, setQuery] = useState('')
   const navigate = useNavigate()
@@ -17,11 +18,13 @@ export function Header({ onToggleMobileNav }: HeaderProps) {
     <header className="site-header">
       <button
         type="button"
-        className="icon-btn"
-        onClick={onToggleMobileNav}
-        aria-label="Abrir o cerrar navegación"
+        className={`icon-btn${navOpen ? ' active' : ''}`}
+        onClick={onToggleNav}
+        aria-label={navOpen ? 'Ocultar categorías' : 'Mostrar categorías'}
+        aria-expanded={navOpen}
+        title={navOpen ? 'Ocultar categorías' : 'Mostrar categorías'}
       >
-        <Menu size={18} />
+        <Menu size={18} aria-hidden />
       </button>
 
       <Link to="/" className="brand">
